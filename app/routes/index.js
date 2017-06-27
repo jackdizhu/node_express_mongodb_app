@@ -137,7 +137,7 @@ router.post('/register', function(req, res, next) {
 });
 /* GET editPwd page. */
 router.get('/editPwd', function(req, res, next) {
-  if(req.session._render.istoken){
+  if(req.session.user){
     var _render = {
         title: 'editPwd',
         msg: '',
@@ -154,7 +154,7 @@ router.post('/editPwd', function(req, res, next) {
   var User = global.dbHandel.getModel('user');
 
   // ?t=00 get参数
-//   var _query = req.query;
+  // var _query = req.query;
   // name=name,pwd=123 post参数
   var _body = req.body;
 
@@ -281,7 +281,12 @@ router.post('/login', function(req, res, next) {
               username: uname
           };
 
-          var _token = token.createToken(tok);
+          try{
+              var _token = token.createToken(tok);
+          }catch(e){
+              var _token = '';
+          }
+
           // 设置 cookie token
           res.cookie('token', _token);
           req.session.msg = '登录成功!';

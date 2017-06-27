@@ -17,16 +17,22 @@ var log = require('./com/log.js');
 var mongoose = require('mongoose');
 global.dbHandel = require('./database/dbHandel');
 // v3.4.5 mongodb
-// global.db = mongoose.connect("mongodb://mongo.duapp.com:8908/cNYxkVbkVlHNxGIQfmje",
-//   {user : "fdf172d6419d42799d02f5d8df0edd95",pass : "da8558d465044ee4bd65d88dee13d72f",auth : {authMechanism: 'SCRAM-SHA-1'}},
-//   function (err,data){
-//     log({err: err ? err : 'mongoDB连接成功!'});
-//   });
-global.db = mongoose.connect("mongodb://mongo.duapp.com:8908/cNYxkVbkVlHNxGIQfmje",
-  {user : "fdf172d6419d42799d02f5d8df0edd95",pass : "da8558d465044ee4bd65d88dee13d72f"},
-  function (err,data){
-    log({err: err ? err : 'mongoDB连接成功!'});
-  });
+
+if(process.env.BAE_ENV_APPID){
+    // 服务器数据库
+    global.db = mongoose.connect("mongodb://mongo.duapp.com:8908/cNYxkVbkVlHNxGIQfmje",
+      {user : "fdf172d6419d42799d02f5d8df0edd95",pass : "da8558d465044ee4bd65d88dee13d72f"},
+      function (err,data){
+        log({err: err ? err : 'mongoDB连接成功!'});
+      });
+}else{
+    // 本地数据库
+    global.db = mongoose.connect("mongodb://127.0.0.1:27017/nodedb",
+      {user : "root",pass : "1234",auth : {authMechanism: 'SCRAM-SHA-1'}},
+      function (err,data){
+        log({err: err ? err : 'mongoDB连接成功!'});
+      });
+}
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -61,11 +67,15 @@ app.use(function(req,res,next){
 
 // token 验证
 app.use(function(req,res,next){
-    var _token = req.body.token || req.query.token || req.headers['x-access-token'] || req.cookies.token;
+    var _token = req.body.token || req.query.token || req.headers['x-access-token'] || req.cookies.token || '';
     var path = req.originalUrl;
     req.session._render = req.session._render || {
         istoken: false
     };
+    log({
+      err: token.checkToken(_token),
+      degug: _token
+    });
     if(!_token || !token.checkToken(_token)){
         req.session._render.istoken = false;
         // token 验证失败 只能访问登录注册
