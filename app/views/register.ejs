@@ -1,0 +1,32 @@
+<%include ./com/head.ejs %>
+  </head>
+  <body>
+    <%include ./com/header.ejs %>
+    <%include ./com/footer.ejs %>
+
+    <div class="registerPage content">
+        <div class="box">
+            <p class="tit">注册</p>
+            <form method="post" action="/register">
+                <label class="bootclearfix">
+                  <span>用户名: </span>
+                  <input type="text" name="username" value="" class="inText" />
+                </label>
+                <label class="bootclearfix">
+                  <span>密  码: </span>
+                  <input type="password" name="pwd" value="" class="inText" />
+                </label>
+                <label class="bootclearfix">
+                  <span>重复密码: </span>
+                  <input type="password" name="pwd2" value="" class="inText" />
+                </label>
+                <!-- <a href="javascript:;" class="btn">注册</a> -->
+                <button>注册</button>
+            </form>
+            <p class="text2"><span>已经注册!</span><a href="/login">前往登录</a></p>
+        </div>
+    </div>
+
+<%include ./com/foot.ejs %>
+  </body>
+</html>

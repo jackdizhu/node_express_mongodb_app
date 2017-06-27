@@ -1,0 +1,290 @@
+// web 自定义字体应用
+// @iconFontTest: "iconFontTest";
+// @font-face {
+//     font-family: 'iconFontTest';
+//     src: url('../font/iconfont.svg') format('svg');
+// }
+// .iconFontTest{
+//     font-family: @iconFontTest;
+// }
+
+//网站主题 黑白色快速设置
+// html { filter:progid:DXImageTransform.Microsoft.BasicImage(grayscale=1); }
+/*清除ie的默认选择框样式清除，隐藏下拉箭头*/
+select::-ms-expand {
+  display: none;
+}
+.borderBox{
+    /*使用百分比宽度 像素边距时 防止超出边界 IE怪异模式*/
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+html{
+  // font-size: 62.5%;
+  width: 100%;
+  height: 100%;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  -webkit-box-sizing: inherit;
+  -moz-box-sizing: inherit;
+  box-sizing: inherit;
+}
+html body{
+  width: 100%;
+  height: 100%;
+}
+a,button,input{
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  /*重置inphone input[type="submit"] ui*/
+  -webkit-appearance: none;
+}
+/*type="file" safail兼容*/
+input[type="file"].opacity0{
+    position: absolute;
+    z-index: -10;
+    filter:alpha(opacity=0);
+    -moz-opacity:0;
+    opacity:0;
+}
+body, button, input, select, textarea{
+  font: 12px/1.5 'PingHei','PingFang SC','Helvetica Neue','Helvetica',"微软雅黑","Microsoft YaHei","Tahoma",Arial,"宋体";
+
+  /*字体抗锯齿*/
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol,
+dl,
+dt,
+dd,
+li,
+html,
+body,
+form,
+input,
+button,
+img,
+area,
+cite,
+strong,
+big,
+small,
+em,
+table,
+td,
+th {
+  padding: 0;
+  margin: 0;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: 14px;
+  font-weight: 400;
+}
+img,
+table,
+td,
+th {
+  border-collapse: collapse;
+  border: 0;
+}
+img[src=""]{
+    display: none;
+}
+input,button,select,textarea{outline:none}
+ul,
+ol {
+  list-style-type: none;
+}
+a {
+  color: #333;
+  text-decoration: none;
+}
+a[href]{
+  z-index: 1;
+  /*处理ie 下图片 与 A 层级问题*/
+  background:url(about:blank);
+}
+a:link{}
+a:visited{}
+a:hover{}
+a:active{outline: none;}
+i{font-style: normal;}
+/*斜体字*/
+.XieTi{ font-style:italic; }
+/*倾斜文字*/
+.XieTi{ font-style:oblique; }
+.floatL {
+  float:left;
+}
+.floatR {
+  float:right;
+}
+.clearfix{
+  overflow:hidden;_zoom:1;
+}
+.bootclearfix {
+  *zoom: 1;
+}
+.bootclearfix:before,
+.bootclearfix:after {
+  display: table;
+  line-height: 0;
+  content: "";
+}
+.bootclearfix:after {
+  clear: both;
+}
+.textRight{
+  text-align: right;
+}
+.textCenter{
+  text-align: center;
+}
+.textLeft{
+  text-align: left;
+}
+.colorRed{
+  color: #ff4c4c;
+}
+.colorGray{
+  color: #646464;
+}
+
+.ComBoxShadow{
+  -webkit-box-shadow:2px 2px 1px rgba(204, 198, 198,0.3);
+  -moz-box-shadow:2px 2px 1px rgba(204, 198, 198,0.3);
+  box-shadow:2px 2px 1px rgba(204, 198, 198,0.3);
+}
+table td{
+    // 防止文字过长破坏table结构
+    word-break: break-all;
+}
+//强制多行显示
+// word-break: break-all;
+// 手机端 文字两端对齐 ( 文字间必须加空格 )   word-break: break-all;
+.TextJustify{
+  -moz-text-align-last:justify;/*ff*/
+  -webkit-text-align-last:justify;/*chrome 20+*/
+  text-align-last:justify;/* ie9*/
+  text-justify:distribute-all-lines;/*ie6-8*/
+  text-align:justify;
+}
+.TextJustify:after{
+  content:".";
+  display: inline-block;
+  width:100%;
+  overflow:hidden;
+  height:0;
+}
+//手机端 文字截断
+.phoneEllipsis{
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.oneLineEllipsis{
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+//图片放大缩小
+// div img{
+//     display: block;
+//     position: relative;
+//     z-index: 1;
+//     width: 95%;
+//     top: 50%;
+//     left: 50%;
+//     top: 0\9;
+//     left: 0\9;
+//     top: 50%\9\0;
+//     left: 50%\9\0;
+//     -moz-transform: translate(-50%, -50%);
+//     -ms-transform: translate(-50%, -50%);
+//     -o-transform: translate(-50%, -50%);
+//     -webkit-transform: translate(-50%, -50%);
+//     transform: translate(-50%, -50%);
+//     -moz-transition: width .3s;
+//     -ms-transition: width .3s;
+//     -o-transition: width .3s;
+//     -webkit-transition: width .3s;
+//     transition: width .3s
+// }
+// div:hover img{
+//   width: 105%;
+// }
+//图片放大 阴影
+// div{
+//   transition-property: transform;
+//   transition-duration: .1s;
+//   transition-timing-function: linear;
+//   overflow: visible
+// }
+// div:hover{
+//   -webkit-box-shadow: 0 0 8px 3px rgba(0, 0, 0, .2);
+//   -moz-box-shadow: 0 0 8px 3px rgba(0, 0, 0, .2);
+//   box-shadow: 0 0 8px 3px rgba(0, 0, 0, .2);
+//   -webkit-transform: scale(1.03);
+//   -moz-transform: scale(1.03);
+//   transform: scale(1.03)
+// }
+//图标翻转动画
+// a .icon_down {
+//     -webkit-transition: -webkit-transform 0.1s ease-out;
+//     -moz-transition: -moz-transform 0.1s ease-out;
+//     -ms-transition: -ms-transform 0.1s ease-out;
+//     -o-transition: -o-transform 0.1s ease-out;
+// }
+// a:hover .icon_down {
+//     -webkit-transform: rotateZ(180deg);
+//     -moz-transform: rotateZ(180deg);
+//     -ms-transform: rotateZ(180deg);
+//     transform: rotateZ(180deg);
+//     -o-transform: rotateZ(180deg);
+// }
+//禁止选中文本
+.NoSelectText{
+  -moz-user-select:none;/*火狐*/
+  -webkit-user-select:none;/*webkit浏览器*/
+  -ms-user-select:none;/*IE10*/
+  -khtml-user-select:none;/*早期浏览器*/
+  user-select:none;
+}
+//select 高度兼容
+.select{
+  height: 30px;
+  line-height: 24px; // ( 30px - 6px )
+  font-size: 14px;
+}
+//input 光标居中兼容
+.inputText{
+  height: 30px;
+  line-height: 16px;
+  padding: 5px 3px;
+  font-size: 14px;
+}

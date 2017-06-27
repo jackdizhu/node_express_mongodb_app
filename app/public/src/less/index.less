@@ -1,0 +1,68 @@
+body{
+  position: relative;
+}
+@headerH: 40px;
+@footerH: 80px;
+
+// header
+.header{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: @headerH;
+  line-height: @headerH;
+  text-align: center;
+  background-color: #eee;
+  color: #666;
+  font-size: 24px;
+  p{
+    float: right;
+    text-align: right;
+    font-size: 14px;
+    padding-right: 10px;
+    a{
+      &:hover{
+        color: #f00;
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+// footer
+.footer{
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: @footerH;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  padding: 20px 0 20px 0;
+  line-height: 40px;
+  text-align: center;
+  font-size: 14px;
+}
+
+// 内容部分
+.content{
+  position: absolute;
+  left: 0;
+  width: 100%;
+}
+.header~.content{
+  top: @headerH;
+}
+.footer~.content{
+  bottom: @footerH;
+}
+
+// 首页
+@import url('./page/indexPage.less');
+// 登录
+@import url('./page/loginPage.less');
+// 注册
+@import url('./page/registerPage.less');
+// 修改密码
+@import url('./page/editPwdPage.less');

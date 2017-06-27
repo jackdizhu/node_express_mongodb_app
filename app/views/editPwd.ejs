@@ -1,0 +1,36 @@
+<%include ./com/head.ejs %>
+  </head>
+  <body>
+    <%include ./com/header.ejs %>
+    <%include ./com/footer.ejs %>
+
+    <div class="editPwdPage content">
+        <div class="box">
+            <p class="tit">修改密码</p>
+            <form method="post" action="/editPwd">
+                <label class="bootclearfix">
+                  <span>用户名: </span>
+                  <input type="text" name="username" value="<%= username %>" class="inText" />
+                </label>
+                <label class="bootclearfix">
+                  <span>原密码: </span>
+                  <input type="password" name="opwd" value="" class="inText" />
+                </label>
+                <label class="bootclearfix">
+                  <span>新密码: </span>
+                  <input type="password" name="npwd" value="" class="inText" />
+                </label>
+                <label class="bootclearfix">
+                  <span>重复密码: </span>
+                  <input type="password" name="pwd2" value="" class="inText" />
+                </label>
+                <!-- <a href="javascript:;" class="btn">注册</a> -->
+                <button>保存</button>
+            </form>
+            <p class="text2"><span> </span><a href="/login">前往登录</a></p>
+        </div>
+    </div>
+
+<%include ./com/foot.ejs %>
+  </body>
+</html>
