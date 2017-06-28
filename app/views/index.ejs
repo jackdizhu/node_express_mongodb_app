@@ -48,8 +48,48 @@
             </ul>
         </div>
     </div>
+    <!-- 图片上传弹框 -->
+    <div class="imgUploadBox hideBox" style="display: none;">
+        <div class="image-editor bootclearfix">
+            <div class="imgBox">
+                <div class="imgView cropit-preview"></div>
+                <input type="range" class="inRange cropit-image-zoom-input">
+            </div>
+            <div class="btnBox">
+                <label class="btn">
+                    <input type="file" class="inFile cropit-image-input">
+                    <span>选择图片</span>
+                </label>
+                <a href="javascript:;" class="imgUploadBoxBtn01 btn closeBtn">确定</a>
+                <a href="javascript:;" class="imgUploadBoxBtn02 btn closeBtn">取消</a>
+            </div>
+        </div>
+    </div>
 
 <%include ./com/foot.ejs %>
+  <script type="text/javascript" src="/dist/js/jquery.cropit.js"></script>
+  <script type="text/javascript">
+      // 图片上传裁剪
+      var $editor = $('.image-editor');
+      $editor.cropit();
+      // $('.imgUploadBoxBtn01').click(function() {
+      //     var imageData = $('.image-editor').cropit('export');
+      //     console.log(imageData);
+      // });
+      $('body').on('click','.imgUploadBox .closeBtn',function () {
+        var is = $(this).hasClass('imgUploadBoxBtn01');
+        if(!is){
+            $('.imgUploadBox').hide();
+            return false;
+        }else{
+            var data = {};
+            data.imageData = $('.image-editor').cropit('export');
+            $.post('/imgUpload',{data: JSON.stringify(data)},function (data, textStatus, xhr) {
+                console.log(data);
+            },'json');
+        }
+      });
+  </script>
   <script type="text/javascript">
       function fullScreen(element) {
         // 判断各种浏览器，找到正确的方法
@@ -162,6 +202,9 @@
           nameBox.find('span').hide();
           li.find('a').hide();
           nameBox.find('.inText').val(nameBox.find('span').text()).show().focus();
+      })
+      .on('click','.editIcon',function () {
+          $('.imgUploadBox').show();
       })
       .on('click','.editLink',function () {
           var _this = this;

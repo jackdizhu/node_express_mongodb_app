@@ -1,6 +1,7 @@
 var
 express = require('express'),
 router = express.Router(),
+fs = require('fs'),
 crypto = require('crypto'),
 log = require('../com/log.js'),
 token = require('../com/token.js');
@@ -63,7 +64,6 @@ router.get('/login', function(req, res, next) {
   };
   res.render('login', _render);
 });
-
 /* GET register page. */
 router.get('/register', function(req, res, next) {
   var _render = {
@@ -149,7 +149,6 @@ router.post('/register', function(req, res, next) {
           );
       }
   });
-
 });
 /* GET editPwd page. */
 router.get('/editPwd', function(req, res, next) {
@@ -261,7 +260,6 @@ router.post('/editPwd', function(req, res, next) {
           res.render('editPwd', _render);
       }
   });
-
 });
 /* POST login page. */
 router.post('/login', function(req, res, next) {
@@ -319,9 +317,7 @@ router.post('/login', function(req, res, next) {
           res.render('login', _render);
       }
   });
-
 });
-
 /* POST saveLink */
 router.post('/saveLink', function(req, res, next) {
     var User = global.dbHandel.getModel('user');
@@ -408,7 +404,41 @@ router.post('/saveLink', function(req, res, next) {
       });
 
     }
+})
+/* POST imgUpload */
+router.post('/imgUpload', function(req, res, next) {
+    var data = JSON.parse(req.body.data);
+    if(req.session.user){
 
+        var base64Data = data.imageData.split(';');
+        var _jpg = '.' + base64Data[0].split('/')[1];
+        var _data = base64Data[1].replace(/base64,/,'');
+        var _b = new Buffer(_data,'base64');
+        var name = (new Date()).getTime() + _jpg;
+        var _path = global._appPath + '/public/data/img/' + name;
+
+        fs.writeFile(_path, _b, function(err) {
+          if(err){
+            res.json({
+              data: name,
+              type: 'err',
+              msg: '保存失败 01'
+            });
+          }else{
+            res.json({
+              data: name,
+              type: 'err',
+              msg: '保存成功 01'
+            });
+          }
+        });
+    }else{
+      res.json({
+        data: name,
+        type: 'err',
+        msg: '保存失败 02'
+      });
+    }
 })
 
 module.exports = router;

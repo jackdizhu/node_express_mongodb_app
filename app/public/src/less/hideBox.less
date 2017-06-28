@@ -1,0 +1,65 @@
+
+// hideBox.less
+.hideBox{
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    background-color: #fff;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.imgUploadBox{
+    @imgUploadBoxW: 500px;
+    @imgUploadBoxH: 300px;
+    width: 500px;
+    height: 300px;
+    margin-left: -@imgUploadBoxW/2;
+    margin-top: -@imgUploadBoxH/2;
+    .imgBox{
+        float: left;
+        width: 300px;
+        height: 300px;
+        padding: 5px 25px;
+        .imgView{
+            background-color: #f8f8f8;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            margin-top: 7px;
+            width: 250px;
+            height: 250px;
+        }
+        .inRange{
+            display: block;
+            width: 100%;
+            background-color: #eee;
+        }
+    }
+    .btnBox{
+        float: left;
+        width: 198px;
+        padding-left: 20px;
+        padding-top: 60px;
+        label{
+            .inFile{
+                display: none;
+            }
+        }
+        .btn{
+            display: block;
+            width: 80px;
+            height: 26px;
+            border: 1px solid #ddd;
+            background-color: #eee;
+            border-radius: 3px;
+            line-height: 24px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+    }
+
+    .cropit-preview-image-container {
+        cursor: move;
+    }
+
+}
