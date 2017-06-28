@@ -1,8 +1,7 @@
 var path=require('path');
 var webpack = require('webpack');
 
-// var basePath = './app/public/';
-var basePath = './';
+var basePath = './app/public/';
 
 module.exports = {
     entry: {

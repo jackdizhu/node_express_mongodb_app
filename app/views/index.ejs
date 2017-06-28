@@ -1,15 +1,194 @@
 <%include ./com/head.ejs %>
   </head>
   <body>
-    <%include ./com/header.ejs %>
-    <%include ./com/footer.ejs %>
 
-    <div class="indexPage content">
-        <div class="con">
+    <div class="indexPage content menuCon">
+        <div class="tit">
             欢迎 <%= username %> 会员.
+        </div>
+        <div class="linkBox">
+          <ul>
+              <% for(var i=0;i<links.length;i++){ %>
+              <li>
+                <div>
+                    <a href="<%= links[i].url %>" target="_blank" class="menuCon">
+                        <span class="menu menu02" style="visibility: hidden;">
+                            <span class="editLink">修改链接</span>
+                            <span class="editIcon">修改图标</span>
+                            <span class="editName">修改名称</span>
+                            <span class="del">删除</span>
+                        </span>
+                    </a>
+                    <div class="imgBox">
+                        <% if(links[i].icon){ %>
+                          <img src="<%= links[i].icon %>">
+                        <% }else{ %>
+                          <img src="/dist/img/link_bg.png">
+                        <% } %>
+                    </div>
+                    <div class="nameBox">
+                        <input type="text" value="<%= links[i].name %>" name="" class="inText" style="display: none;" />
+                        <span><%= links[i].name %></span>
+                    </div>
+                </div>
+              </li>
+              <% } %>
+          </ul>
+        </div>
+        <div class="menu menu01" style="visibility: hidden;">
+            <ul>
+              <li><a href="/login">登录</a></li>
+              <li><a href="/register">注册</a></li>
+              <li><a href="/editPwd">修改密码</a></li>
+              <li><a href="javascript:window.location.reload();">刷新页面</a></li>
+              <li><a href="javascript:;" class="addLink">新建链接</a></li>
+              <li><a href="javascript:;" class="fullScreen">全屏显示</a></li>
+              <li><a href="javascript:;" class="exitFull" style="display: none;">退出全屏</a></li>
+              <li><a href="javascript:;" class="saveLink">保存所有链接</a></li>
+            </ul>
         </div>
     </div>
 
 <%include ./com/foot.ejs %>
+  <script type="text/javascript">
+      function fullScreen(element) {
+        // 判断各种浏览器，找到正确的方法
+        var requestMethod = element.requestFullScreen || //W3C
+        element.webkitRequestFullScreen ||  //Chrome等
+        element.mozRequestFullScreen || //FireFox
+        element.msRequestFullScreen; //IE11
+        if (requestMethod) {
+          requestMethod.call(element);
+        } else if (typeof window.ActiveXObject !== "undefined") {
+          var wscript = new ActiveXObject("WScript.Shell");
+          if (wscript !== null) {
+            wscript.SendKeys("{F11}");
+          }
+        }
+      }
+      function exitFull() {
+        // 判断各种浏览器，找到正确的方法
+        var exitMethod = document.exitFullscreen || //W3C
+        document.mozCancelFullScreen ||  //Chrome等
+        document.webkitExitFullscreen || //FireFox
+        document.webkitExitFullscreen; //IE11
+        if (exitMethod) {
+          exitMethod.call(document);
+        } else if (typeof window.ActiveXObject !== "undefined") {//for Internet Explorer
+          var wscript = new ActiveXObject("WScript.Shell");
+          if (wscript !== null) {
+            wscript.SendKeys("{F11}");
+          }
+        }
+      }
+      // 右键菜单 公共js
+      (function () {
+          // 隐藏所有 菜单
+          function menuHidden() {
+                $('.menu').css('visibility','hidden');
+          }
+          // 显示右键菜单
+          function fn_oncontextmenu(menu,event) {
+              menuHidden();
+              var W = menu.offsetWidth;
+              var H = menu.offsetHeight;
+              if(event.clientX + W > screen.availWidth){
+                menu.style.left = event.clientX - W + 'px';
+              }else{
+                menu.style.left = event.clientX + 'px';
+              }
+              if(event.clientY + H > screen.availHeight){
+                menu.style.top = event.clientY - H + 'px';
+              }else{
+                menu.style.top = event.clientY + 'px';
+              }
+              menu.style.visibility = 'visible';
+              return false;
+          };
+          $('body')
+          .on('click',function (event) {
+              menuHidden();
+          })
+          .on('contextmenu','.menuCon',function (event) {
+              event.stopPropagation();
+              event.preventDefault();
+              var menu = $(this).children('.menu')[0];
+              fn_oncontextmenu(menu,event);
+          })
+          .on('contextmenu','.menu',function (event) {
+              event.stopPropagation();
+              event.preventDefault();
+              return false;
+          });
+      }());
+      // 桌面右键菜单
+      $('.content')
+      .on('click','.addLink',function () {
+          var Ht = '<li><div><a href="javascript:;" class="menuCon"><span class="menu menu02" style="visibility:hidden"><span class="editLink">修改链接</span> <span class="editIcon">修改图标</span> <span class="editName">修改名称</span> <span class="del">删除</span></span></a><div class="imgBox"><img src="/dist/img/link_bg.png"></div><div class="nameBox"><input type="text" value="新建链接" name="" class="inText" style="display:none"> <span>新建链接</span></div></div></li>';
+          $('.linkBox').find('ul').append(Ht);
+      })
+      .on('click','.fullScreen',function (){
+          fullScreen(document.documentElement);
+          $('.fullScreen').hide();
+          $('.exitFull').show();
+      })
+      .on('click','.exitFull',function (){
+          exitFull();
+          $('.exitFull').hide();
+          $('.fullScreen').show();
+      })
+      .on('click','.saveLink',function (){
+          var li = $('.linkBox').find('li');
+          var allLink = {link:[]};
+          var _ = {},_this;
+          for (var i = 0; i < li.length; i++) {
+            _ = {};
+            _this = $(li[i]);
+            _.url = _this.find('a').attr('href');
+            _.name = _this.find('.inText').val();
+            allLink.link.push(_);
+          }
+          $.post('/saveLink', {allLink: JSON.stringify(allLink)}, function(data, textStatus, xhr) {
+              console.log(data);
+          },'json');
+      })
+      .on('click','.del',function () {
+          var li = $(this).parents('li');
+          li.remove();
+      })
+      .on('click','.editName',function () {
+          var li = $(this).parents('li');
+          var nameBox = li.find('.nameBox');
+          nameBox.find('span').hide();
+          li.find('a').hide();
+          nameBox.find('.inText').val(nameBox.find('span').text()).show().focus();
+      })
+      .on('click','.editLink',function () {
+          var _this = this;
+          //prompt层
+          layer.prompt({title: '请输入URL链接地址', formType: 2}, function(text, index){
+              layer.close(index);
+              var u = text;
+              var is = /^http[s]?:\/\//.test(u);
+              if(is){
+                $(_this).parents('li').find('a').attr({
+                  'target': '_blank',
+                  'href': u
+                });
+              }
+          });
+      })
+      .on('keyup','.inText',function (e) {
+          if(e.keyCode == '13'){
+              var li = $(this).parents('li');
+              var nameBox = li.find('.nameBox');
+              var v = $(this).val();
+              nameBox.find('span').text(v).show();
+              nameBox.find('.inText').hide();
+              li.find('a').show();
+          }
+      })
+
+  </script>
   </body>
 </html>

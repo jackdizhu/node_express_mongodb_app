@@ -13,6 +13,7 @@ var session = require('express-session');
 var token = require('../app/com/token.js');
 
 var log = require('./com/log.js');
+var getBrowserInfo = require('./com/getBrowserInfo.js');
 
 var mongoose = require('mongoose');
 global.dbHandel = require('./database/dbHandel');
@@ -67,15 +68,12 @@ app.use(function(req,res,next){
 
 // token 验证
 app.use(function(req,res,next){
+    var _BrowserInfo = getBrowserInfo(req);
     var _token = req.body.token || req.query.token || req.headers['x-access-token'] || req.cookies.token || '';
     var path = req.originalUrl;
     req.session._render = req.session._render || {
         istoken: false
     };
-    log({
-      err: token.checkToken(_token),
-      degug: _token
-    });
     if(!_token || !token.checkToken(_token)){
         req.session._render.istoken = false;
         // token 验证失败 只能访问登录注册
@@ -83,8 +81,16 @@ app.use(function(req,res,next){
         //     res.redirect("/login");
         // }else{
         // }
+        log({
+          err: token.decodeToken(_token),
+          debug: _BrowserInfo
+        });
         next();  //中间件传递
     }else{
+        log({
+          err: token.decodeToken(_token),
+          debug: _BrowserInfo
+        });
         req.session._render.istoken = true;
         next();  //中间件传递
     }

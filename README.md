@@ -5,6 +5,8 @@ http://jackdizhu.duapp.com
 
 https://jackdizhu.github.io/node_html/
 
+兼容 ie8+
+
 express(ejs) + mongodb
 
 登录 注册 修改密码

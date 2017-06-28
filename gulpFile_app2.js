@@ -22,8 +22,7 @@ var gulp = require('gulp'),
   webpack= require('webpack'),
   webpack_config = require('./webpack.config.js');
 
-  // var basePath = 'app/public/';
-  var basePath = './';
+  var basePath = 'app/public/';
 
   setInterval(() => {
       console.log('less 编译');

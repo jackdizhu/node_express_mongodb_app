@@ -1,8 +1,107 @@
 
 // indexPage
 .indexPage{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: url('/dist/img/index_bg.jpg') center center no-repeat;
   .tit{
     padding: 4px 6px;
     line-height: 30px;
+    color: #fff;
+    font-size: 14px;
+  }
+  // 右键菜单样式
+  .menu{
+    display: block;
+    position: fixed;
+    padding: 4px 2px;
+    border-radius: 3px;
+    width: 80px;
+    height: auto;
+    background-color: #eee;
+    min-height: 160px;
+  }
+  .menu01{
+    // width: 80px;
+    // height: auto;
+    // background-color: #eee;
+    // min-height: 160px;
+    li{
+        &:hover{
+            background-color: #fff;
+        }
+        a{
+            display: block;
+        }
+    }
+  }
+  .menu02{
+        span{
+            display: block;
+            cursor: pointer;
+            &:hover{
+                background-color: #fff;
+            }
+        }
+  }
+  // 链接列表样式
+  .linkBox{
+    li{
+        float: left;
+        padding: 5px;
+        >div{
+            position: relative;
+            >a{
+                position: absolute;
+                display: block;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                &:hover{
+                    border: 1px dashed #ddd;
+                }
+            }
+        }
+        .imgBox{
+            padding-top: 5px;
+            width: 50px;
+            height: 55px;
+            margin-bottom: 5px;
+            margin-left: auto;
+            margin-right: auto;
+            img{
+                display: block;
+                max-width: 100%;
+            }
+        }
+        .nameBox{
+            width: 80px;
+            span{
+                display: block;
+                height: 22px;
+                line-height: 22px;
+                width: 76px;
+                margin-left: auto;
+                margin-right: auto;
+                overflow: hidden;
+                text-align: center;
+                color: #ccc;
+            }
+        }
+        .inText{
+            border: 1px solid #ccc;
+            height: 22px;
+            width: 80px;
+            line-height: 18px;
+            padding: 1px 3px;
+            text-align: center;
+            color: #ccc;
+            background-color: rgba(0, 0, 0, 0.75);
+        }
+    }
   }
 }

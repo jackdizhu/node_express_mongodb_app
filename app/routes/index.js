@@ -23,6 +23,7 @@ var key = 'express_jackdizhu';
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+  var Link = global.dbHandel.getModel('link');
   if(req.session.user){
       var _render = {
           title: '首页',
@@ -30,7 +31,22 @@ router.get('/', function(req, res, next) {
           data: req.session._render,
           username: req.session.user.name
       };
-      res.render('index', _render);
+      var uname = req.session.user.name;
+      Link.findOne({name: uname},function(err,doc){
+          if(err){
+              _render.links = [];
+              res.render('index', _render);
+          }else if (doc){
+              log({
+                err: doc
+              });
+              _render.links = doc.links;
+              res.render('index', _render);
+          }else{
+              _render.links = [];
+              res.render('index', _render);
+          }
+      });
   }else{
       // 重定向
       res.redirect("/login");
@@ -305,5 +321,94 @@ router.post('/login', function(req, res, next) {
   });
 
 });
+
+/* POST saveLink */
+router.post('/saveLink', function(req, res, next) {
+    var User = global.dbHandel.getModel('user');
+    var Link = global.dbHandel.getModel('link');
+    var uname = req.session.user.name;
+    var allLink = JSON.parse(req.body.allLink);
+    if(req.session.user){
+
+      Link.findOne({name: uname},function(err,doc){
+        if(err){
+            // 打印错误
+            log({
+              req: req,err: err
+            });
+            res.json({
+              data: allLink,
+              type: 'err',
+              msg: '保存失败 01'
+            });
+        }else if(doc){
+            Link.update(
+                {
+                    name: uname
+                },
+                {
+                    name: uname,
+                    links: allLink.link
+                },
+                function(err,doc){
+                    if (err) {
+                        // 打印错误
+                        log({
+                          req: req,err: err
+                        });
+                        res.json({
+                          data: allLink,
+                          type: 'err',
+                          msg: '保存失败 02'
+                        });
+                    } else {
+                        res.json({
+                          data: doc,
+                          type: 'ok',
+                          msg: '保存成功'
+                        });
+                    }
+                }
+            );
+        }else{
+            Link.create(
+                {
+                    name: uname,
+                    links: allLink.link
+                },
+                function(err,doc){
+                    if (err) {
+                        // 打印错误
+                        log({
+                          req: req,err: err
+                        });
+                        res.json({
+                          data: allLink,
+                          type: 'err',
+                          msg: '保存失败 02'
+                        });
+                    } else {
+                        res.json({
+                          data: doc,
+                          type: 'ok',
+                          msg: '保存成功'
+                        });
+                    }
+                }
+            );
+        }
+      });
+
+    }else{
+
+      res.json({
+        data: allLink,
+        type: 'err',
+        msg: '保存失败 04'
+      });
+
+    }
+
+})
 
 module.exports = router;
