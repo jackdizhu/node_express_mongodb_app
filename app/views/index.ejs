@@ -78,6 +78,7 @@
       // });
       $('body').on('click','.imgUploadBox .closeBtn',function () {
         var is = $(this).hasClass('imgUploadBoxBtn01');
+        var _targetDom = $(this).parents('.imgUploadBox')[0]._targetDom;
         if(!is){
             $('.imgUploadBox').hide();
             return false;
@@ -85,7 +86,13 @@
             var data = {};
             data.imageData = $('.image-editor').cropit('export');
             $.post('/imgUpload',{data: JSON.stringify(data)},function (data, textStatus, xhr) {
-                console.log(data);
+                if(data.type == 'ok'){
+                    layer.msg('上传成功!');
+                    $(_targetDom).find('img').attr('src',data.data);
+                }else{
+                    layer.msg('上传失败!');
+                }
+                $('.imgUploadBox').hide();
             },'json');
         }
       });
@@ -186,10 +193,15 @@
             _this = $(li[i]);
             _.url = _this.find('a').attr('href');
             _.name = _this.find('.inText').val();
+            _.icon = _this.find('img').attr('src');
             allLink.link.push(_);
           }
           $.post('/saveLink', {allLink: JSON.stringify(allLink)}, function(data, textStatus, xhr) {
-              console.log(data);
+              if(data.type == 'ok'){
+                  layer.msg('保存成功!');
+              }else{
+                  layer.msg('保存失败!');
+              }
           },'json');
       })
       .on('click','.del',function () {
@@ -204,6 +216,7 @@
           nameBox.find('.inText').val(nameBox.find('span').text()).show().focus();
       })
       .on('click','.editIcon',function () {
+          $('.imgUploadBox')[0]._targetDom = $(this).parents('li');
           $('.imgUploadBox').show();
       })
       .on('click','.editLink',function () {

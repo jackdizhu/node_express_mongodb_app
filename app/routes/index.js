@@ -420,21 +420,21 @@ router.post('/imgUpload', function(req, res, next) {
         fs.writeFile(_path, _b, function(err) {
           if(err){
             res.json({
-              data: name,
+              data: '/data/img/' + name,
               type: 'err',
               msg: '保存失败 01'
             });
           }else{
             res.json({
-              data: name,
-              type: 'err',
+              data: '/data/img/' + name,
+              type: 'ok',
               msg: '保存成功 01'
             });
           }
         });
     }else{
       res.json({
-        data: name,
+        data: '/data/img/' + name,
         type: 'err',
         msg: '保存失败 02'
       });
