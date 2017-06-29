@@ -53,7 +53,6 @@ router.get('/', function(req, res, next) {
       res.redirect("/login");
   }
 });
-
 /* GET login page. */
 router.get('/login', function(req, res, next) {
   var _render = {

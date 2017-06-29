@@ -11,7 +11,7 @@
               <% for(var i=0;i<links.length;i++){ %>
               <li data-type="<%= links[i].type %>" data-href="<%= links[i].url %>" data-img="<%= links[i].icon %>" data-name="<%= links[i].name %>">
                 <div>
-                    <a href="<%= links[i].url %>" target="_blank" class="menuCon">
+                    <a href="<%= links[i].url %>" <% if(links[i].type == 'link'){ %> target="_blank" <% } %> class="menuCon">
                         <span class="menu menu02" style="visibility: hidden;">
                             <% if(links[i].type=='link'){ %>
                             <span class="editLink">修改链接</span>
@@ -238,7 +238,7 @@
           $('.linkBox').find('ul').append(Ht);
       })
       .on('click','.addLink',function () {
-          var Ht = '<li data-type="link" data-href="javascript:;" data-img="/dist/img/link_bg.png" data-name="新建链接"><div><a href="javascript:;" class="menuCon"><span class="menu menu02" style="visibility:hidden"><span class="editIcon">修改图标</span> <span class="editName">修改名称</span> <span class="del">删除</span></span></a><div class="imgBox"><img src="/dist/img/link_bg.png"></div><div class="nameBox"><input type="text" value="新建链接" name="" class="inText" style="display:none"> <span>新建链接</span></div></div></li>';
+          var Ht = '<li data-type="link" data-href="javascript:;" data-img="/dist/img/link_bg.png" data-name="新建链接"><div><a href="javascript:;" target="_blank" class="menuCon"><span class="menu menu02" style="visibility:hidden"><span class="editIcon">修改图标</span> <span class="editName">修改名称</span> <span class="del">删除</span></span></a><div class="imgBox"><img src="/dist/img/link_bg.png"></div><div class="nameBox"><input type="text" value="新建链接" name="" class="inText" style="display:none"> <span>新建链接</span></div></div></li>';
           $('.linkBox').find('ul').append(Ht);
       })
       .on('click','.fullScreen',function (){
