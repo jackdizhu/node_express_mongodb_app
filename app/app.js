@@ -65,35 +65,50 @@ app.use(function(req,res,next){
     if(err){
         res.locals.message = '<div class="alert alert-danger" style="margin-bottom:20px;color:red;">'+err+'</div>';
     }
+    // 定义 session._render 属性
+    req.session._render = req.session._render || {
+        istoken: false
+    };
+
+    next();  //中间件传递
+});
+
+// Fingerprint2ID 获取浏览器指纹
+app.use(function(req,res,next){
+    // 获取浏览器 指纹信息
+    var Fingerprint2ID = req.body.Fingerprint2ID || req.query.Fingerprint2ID || req.cookies.Fingerprint2ID || '';
+    req.session._render.Fingerprint2ID = Fingerprint2ID;
+
+    next();  //中间件传递
+});
+
+// getBrowserInfo 获取浏览器ip地址
+app.use(function(req,res,next){
+    // 获取浏览器信息
+    var _BrowserInfo = getBrowserInfo(req);
+    req.session._render.BrowserInfo = _BrowserInfo;
+
     next();  //中间件传递
 });
 
 // token 验证
 app.use(function(req,res,next){
-    var _BrowserInfo = getBrowserInfo(req);
+    // 请求路径
+    req.session._render.path = req.originalUrl;
+    // 获取token
     var _token = req.body.token || req.query.token || req.headers['x-access-token'] || req.cookies.token || '';
-    var path = req.originalUrl;
-    req.session._render = req.session._render || {
-        istoken: false
-    };
+
     if(!_token || !token.checkToken(_token)){
         req.session._render.istoken = false;
-        // token 验证失败 只能访问登录注册
-        // if ((path != "/login") && (path != "/register")) {
-        //     res.redirect("/login");
-        // }else{
-        // }
         log({
-          err: token.decodeToken(_token),
-          debug: _BrowserInfo
+          debug: req.session._render,
         });
         next();  //中间件传递
     }else{
-        log({
-          err: token.decodeToken(_token),
-          debug: _BrowserInfo
-        });
         req.session._render.istoken = true;
+        log({
+          debug: req.session._render,
+        });
         next();  //中间件传递
     }
 });

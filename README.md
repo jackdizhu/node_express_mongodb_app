@@ -5,10 +5,9 @@ http://jackdizhu.duapp.com
 
 https://jackdizhu.github.io/node_html/
 
-兼容 ie8+
+[一个 在线 收藏夹 项目]
+    浏览器 右键功能 全屏显示功能 图片上传裁剪 浏览器指纹采集
+    服务器 express(ejs) + mongodb 登录 注册 修改密码 图片base64保存图片 token 生成(aes加密 + hash 防止篡改)
 
-express(ejs) + mongodb
+兼容 ie8+ (全屏功能除外...)
 
-登录 注册 修改密码
-
-登录 后生成 session token(aes 加密)

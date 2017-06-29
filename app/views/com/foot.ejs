@@ -1,3 +1,17 @@
+  <script type="text/javascript" src="/dist/js/fn.js"></script>
+  <script type="text/javascript" src="/fingerprint2/fingerprint2.js"></script>
+  <script type="text/javascript">
+        (function () {
+           if(self != top){
+                top.location.href= self.location.href;
+           }
+        }());
+        (new Fingerprint2()).get(function(result, components){
+            setCookie('Fingerprint2ID',result);
+          // console.log(result);
+          // console.log(components);
+        });
+  </script>
   <script type="text/javascript">
       // var msg = document.getElementById('msg').value;
       // var msg = '<%= msg %>';
