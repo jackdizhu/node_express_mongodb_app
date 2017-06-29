@@ -9,11 +9,13 @@
         <div class="linkBox">
           <ul>
               <% for(var i=0;i<links.length;i++){ %>
-              <li>
+              <li data-type="<%= links[i].type %>" data-href="<%= links[i].url %>" data-img="<%= links[i].icon %>" data-name="<%= links[i].name %>">
                 <div>
                     <a href="<%= links[i].url %>" target="_blank" class="menuCon">
                         <span class="menu menu02" style="visibility: hidden;">
+                            <% if(links[i].type=='link'){ %>
                             <span class="editLink">修改链接</span>
+                            <% } %>
                             <span class="editIcon">修改图标</span>
                             <span class="editName">修改名称</span>
                             <span class="del">删除</span>
@@ -31,6 +33,37 @@
                         <span><%= links[i].name %></span>
                     </div>
                 </div>
+                <% if(links[i].type == 'folder' && links[i].childs){ %>
+                <ul>
+                    <% for(var j=0;j<links[i].childs.length;j++){ %>
+                    <li data-type="<%= links[i].childs[j].type %>" data-href="<%= links[i].childs[j].url %>" data-img="<%= links[i].childs[j].icon %>" data-name="<%= links[i].childs[j].name %>">
+                      <div>
+                          <a href="<%= links[i].childs[j].url %>" target="_blank" class="menuCon">
+                              <span class="menu menu02" style="visibility: hidden;">
+                                  <% if(links[i].childs[j].type=='link'){ %>
+                                  <span class="editLink">修改链接</span>
+                                  <% } %>
+                                  <span class="editIcon">修改图标</span>
+                                  <span class="editName">修改名称</span>
+                                  <span class="del">删除</span>
+                              </span>
+                          </a>
+                          <div class="imgBox">
+                              <% if(links[i].childs[j].icon){ %>
+                                <img src="<%= links[i].childs[j].icon %>">
+                              <% }else{ %>
+                                <img src="/dist/img/link_bg.png">
+                              <% } %>
+                          </div>
+                          <div class="nameBox">
+                              <input type="text" value="<%= links[i].childs[j].name %>" name="" class="inText" style="display: none;" />
+                              <span><%= links[i].childs[j].name %></span>
+                          </div>
+                      </div>
+                    </li>
+                    <% } %>
+                </ul>
+                <% } %>
               </li>
               <% } %>
           </ul>
@@ -41,6 +74,7 @@
               <li><a href="/register">注册</a></li>
               <li><a href="/editPwd">修改密码</a></li>
               <li><a href="javascript:window.location.reload();">刷新页面</a></li>
+              <li><a href="javascript:;" class="addFolder">新建文件夹</a></li>
               <li><a href="javascript:;" class="addLink">新建链接</a></li>
               <li><a href="javascript:;" class="fullScreen">全屏显示</a></li>
               <li><a href="javascript:;" class="exitFull" style="display: none;">退出全屏</a></li>
@@ -88,6 +122,7 @@
             $.post('/imgUpload',{data: JSON.stringify(data)},function (data, textStatus, xhr) {
                 if(data.type == 'ok'){
                     layer.msg('上传成功!');
+                    $(_targetDom).attr('data-img',data.data);
                     $(_targetDom).find('img').attr('src',data.data);
                 }else{
                     layer.msg('上传失败!');
@@ -168,10 +203,42 @@
               return false;
           });
       }());
+      // 获取 post 数据
+      function get_postData() {
+          function get_data(li) {
+            var _ = {};
+            _this = $(li);
+            _.type = _this.attr('data-type');
+            _.url = _this.find('a').attr('href');
+            _.name = _this.find('.inText').val();
+            _.icon = _this.find('img').attr('src');
+            return _;
+          }
+          var li = $('.linkBox>ul').children('li');
+          var allLink = {link:[]};
+          var _ = {},_this,__ = {};
+          for (var i = 0; i < li.length; i++) {
+            _ = get_data(li[i]);
+            if(_.type == 'folder'){
+              _.childs = [];
+              var _lis = $(li[i]).find('li');
+              for (var j = 0; j < _lis.length; j++) {
+                __ = get_data(_lis[j]);
+                _.childs.push(__);
+              }
+            }
+            allLink.link.push(_);
+          }
+          return allLink;
+      }
       // 桌面右键菜单
       $('.content')
+      .on('click','.addFolder',function () {
+          var Ht = '<li data-type="folder" data-href="javascript:;" data-img="/dist/img/folder_bg.png" data-name="新建文件夹"><div><a href="javascript:;" class="menuCon"><span class="menu menu02" style="visibility:hidden"><span class="editLink">修改链接</span> <span class="editIcon">修改图标</span> <span class="editName">修改名称</span> <span class="del">删除</span></span></a><div class="imgBox"><img src="/dist/img/folder_bg.png"></div><div class="nameBox"><input type="text" value="新建文件夹" name="" class="inText" style="display:none"> <span>新建文件夹</span></div></div></li>';
+          $('.linkBox').find('ul').append(Ht);
+      })
       .on('click','.addLink',function () {
-          var Ht = '<li><div><a href="javascript:;" class="menuCon"><span class="menu menu02" style="visibility:hidden"><span class="editLink">修改链接</span> <span class="editIcon">修改图标</span> <span class="editName">修改名称</span> <span class="del">删除</span></span></a><div class="imgBox"><img src="/dist/img/link_bg.png"></div><div class="nameBox"><input type="text" value="新建链接" name="" class="inText" style="display:none"> <span>新建链接</span></div></div></li>';
+          var Ht = '<li data-type="link" data-href="javascript:;" data-img="/dist/img/link_bg.png" data-name="新建链接"><div><a href="javascript:;" class="menuCon"><span class="menu menu02" style="visibility:hidden"><span class="editIcon">修改图标</span> <span class="editName">修改名称</span> <span class="del">删除</span></span></a><div class="imgBox"><img src="/dist/img/link_bg.png"></div><div class="nameBox"><input type="text" value="新建链接" name="" class="inText" style="display:none"> <span>新建链接</span></div></div></li>';
           $('.linkBox').find('ul').append(Ht);
       })
       .on('click','.fullScreen',function (){
@@ -185,17 +252,7 @@
           $('.fullScreen').show();
       })
       .on('click','.saveLink',function (){
-          var li = $('.linkBox').find('li');
-          var allLink = {link:[]};
-          var _ = {},_this;
-          for (var i = 0; i < li.length; i++) {
-            _ = {};
-            _this = $(li[i]);
-            _.url = _this.find('a').attr('href');
-            _.name = _this.find('.inText').val();
-            _.icon = _this.find('img').attr('src');
-            allLink.link.push(_);
-          }
+          var allLink = get_postData();
           $.post('/saveLink', {allLink: JSON.stringify(allLink)}, function(data, textStatus, xhr) {
               if(data.type == 'ok'){
                   layer.msg('保存成功!');
@@ -221,16 +278,18 @@
       })
       .on('click','.editLink',function () {
           var _this = this;
+          var li = $(this).parents('li');
           //prompt层
           layer.prompt({title: '请输入URL链接地址', formType: 2}, function(text, index){
               layer.close(index);
               var u = text;
               var is = /^http[s]?:\/\//.test(u);
               if(is){
-                $(_this).parents('li').find('a').attr({
+                li.find('a').attr({
                   'target': '_blank',
                   'href': u
                 });
+                li.attr('data-href',u);
               }
           });
       })
@@ -242,6 +301,7 @@
               nameBox.find('span').text(v).show();
               nameBox.find('.inText').hide();
               li.find('a').show();
+              li.attr('data-name',v);
           }
       })
 
