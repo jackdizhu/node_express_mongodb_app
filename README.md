@@ -1,9 +1,9 @@
 
 node_baiduGit node项目 部署 百度云
 
-http://jackdizhu.duapp.com
+<!--http://jackdizhu.duapp.com-->
 
-https://jackdizhu.github.io/node_express_mongodb_app/
+<!--https://jackdizhu.github.io/node_express_mongodb_app/-->
 
 [一个 在线 收藏夹 项目]
     浏览器 右键功能 全屏显示功能 图片上传裁剪 浏览器指纹采集
