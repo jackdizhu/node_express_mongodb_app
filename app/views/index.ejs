@@ -70,9 +70,9 @@
         </div>
         <div class="menu menu01" style="visibility: hidden;">
             <ul>
-              <li><a href="/login">登录</a></li>
-              <li><a href="/register">注册</a></li>
-              <li><a href="/editPwd">修改密码</a></li>
+              <li><a href="/user/login">登录</a></li>
+              <li><a href="/user/register">注册</a></li>
+              <li><a href="/user/editPwd">修改密码</a></li>
               <li><a href="javascript:window.location.reload();">刷新页面</a></li>
               <li><a href="javascript:;" class="addFolder">新建文件夹</a></li>
               <li><a href="javascript:;" class="addLink">新建链接</a></li>
@@ -119,7 +119,7 @@
         }else{
             var data = {};
             data.imageData = $('.image-editor').cropit('export');
-            $.post('/imgUpload',{data: JSON.stringify(data)},function (data, textStatus, xhr) {
+            $.post('/user/imgUpload',{data: JSON.stringify(data)},function (data, textStatus, xhr) {
                 if(data.type == 'ok'){
                     layer.msg('上传成功!');
                     $(_targetDom).attr('data-img',data.data);
@@ -253,7 +253,7 @@
       })
       .on('click','.saveLink',function (){
           var allLink = get_postData();
-          $.post('/saveLink', {allLink: JSON.stringify(allLink)}, function(data, textStatus, xhr) {
+          $.post('/user/saveLink', {allLink: JSON.stringify(allLink)}, function(data, textStatus, xhr) {
               if(data.type == 'ok'){
                   layer.msg('保存成功!');
               }else{

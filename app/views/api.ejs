@@ -1,0 +1,15 @@
+<%include ./com/head.ejs %>
+  </head>
+  <body>
+    <%include ./com/header.ejs %>
+    <%include ./com/footer.ejs %>
+
+
+  <%include ./com/foot.ejs %>
+  <script type="text/javascript">
+    $.post('/api',function (data) {
+      console.log(data);
+    },'json');
+  </script>
+  </body>
+</html>
