@@ -11,3 +11,8 @@ node_baiduGit node项目 部署 百度云
 
 兼容 ie8+ (全屏功能除外...)
 
+// 启动 mongodb
+mongod.exe --dbpath D:/mongodb/data/db/
+// 启动 node
+node www.js
+
