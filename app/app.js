@@ -9,6 +9,7 @@ var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var _api = require('./routes/api');
 var users = require('./routes/users');
+var oauth = require('./routes/oauth');
 
 var app = express();
 var session = require('express-session');
@@ -123,6 +124,8 @@ app.use('/api', _api);
 
 app.use('/', index);
 app.use('/user', users);
+// 微信授权
+app.use('/oauth', oauth);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
