@@ -22,6 +22,16 @@ var key = 'express_jackdizhu';
 //     next();
 // });
 
+/* GET login page. */
+router.get('/wx', function(req, res, next) {
+  var _render = {
+      title: 'wx',
+      msg: '',
+      data: req.session._render,
+      username: ''
+  };
+  res.render('wx', _render);
+});
 /* GET home page. */
 router.get('/', function(req, res, next) {
   var Link = global.dbHandel.getModel('link');
