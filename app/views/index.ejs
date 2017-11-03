@@ -9,17 +9,17 @@
         <div class="linkBox">
           <ul>
               <% for(var i=0;i<links.length;i++){ %>
-              <li data-type="<%= links[i].type %>" data-href="<%= links[i].url %>" data-img="<%= links[i].icon %>" data-name="<%= links[i].name %>" class="menuCon">
+              <li data-type="<%= links[i].type %>" data-href="<%= links[i].url %>" data-img="<%= links[i].icon %>" data-name="<%= links[i].name %>">
                 <div>
-                    <span class="menu menu02" style="visibility: hidden;">
-                        <% if(links[i].type=='link'){ %>
-                        <span class="editLink">修改链接</span>
-                        <% } %>
-                        <span class="editIcon">修改图标</span>
-                        <span class="editName">修改名称</span>
-                        <span class="del">删除</span>
-                    </span>
-                    <a href="<%= links[i].url %>" <% if(links[i].type == 'link'){ %> target="_blank" <% } %>>
+                    <a href="<%= links[i].url %>" <% if(links[i].type == 'link'){ %> target="_blank" <% } %> class="menuCon">
+                        <span class="menu menu02" style="visibility: hidden;">
+                            <% if(links[i].type=='link'){ %>
+                            <span class="editLink">修改链接</span>
+                            <% } %>
+                            <span class="editIcon">修改图标</span>
+                            <span class="editName">修改名称</span>
+                            <span class="del">删除</span>
+                        </span>
                     </a>
                     <div class="imgBox">
                         <% if(links[i].icon){ %>
@@ -118,7 +118,10 @@
             return false;
         }else{
             var data = {};
-            data.imageData = $('.image-editor').cropit('export');
+            data.imageData = $('.image-editor').cropit('export',{
+              quality: .75,
+              type: 'image/jpeg'
+            });
             $.post('/user/imgUpload',{data: JSON.stringify(data)},function (data, textStatus, xhr) {
                 if(data.type == 'ok'){
                     layer.msg('上传成功!');
@@ -234,11 +237,11 @@
       // 桌面右键菜单
       $('.content')
       .on('click','.addFolder',function () {
-          var Ht = '<li data-type="folder" data-href="javascript:;" data-img="/dist/img/folder_bg.png" data-name="新建文件夹" class="menuCon"><div><span class="menu menu02" style="visibility:hidden"><span class="editIcon">修改图标</span> <span class="editName">修改名称</span> <span class="del">删除</span></span><a href="javascript:;"></a><div class="imgBox"><img src="/dist/img/folder_bg.png"></div><div class="nameBox"><input type="text" value="新建文件夹" name="" class="inText" style="display:none"> <span>新建文件夹</span></div></div></li>';
+          var Ht = '<li data-type="folder" data-href="javascript:;" data-img="/dist/img/folder_bg.png" data-name="新建文件夹"><div><a href="javascript:;" class="menuCon"><span class="menu menu02" style="visibility:hidden"><span class="editIcon">修改图标</span> <span class="editName">修改名称</span> <span class="del">删除</span></span></a><div class="imgBox"><img src="/dist/img/folder_bg.png"></div><div class="nameBox"><input type="text" value="新建文件夹" name="" class="inText" style="display:none"> <span>新建文件夹</span></div></div></li>';
           $('.linkBox').find('ul').append(Ht);
       })
       .on('click','.addLink',function () {
-          var Ht = '<li data-type="link" data-href="javascript:;" data-img="/dist/img/link_bg.png" data-name="新建链接" class="menuCon"><div><span class="menu menu02" style="visibility:hidden"><span class="editLink">修改链接</span><span class="editIcon">修改图标</span> <span class="editName">修改名称</span> <span class="del">删除</span></span><a href="javascript:;" target="_blank"></a><div class="imgBox"><img src="/dist/img/link_bg.png"></div><div class="nameBox"><input type="text" value="新建链接" name="" class="inText" style="display:none"> <span>新建链接</span></div></div></li>';
+          var Ht = '<li data-type="link" data-href="javascript:;" data-img="/dist/img/link_bg.png" data-name="新建链接"><div><a href="javascript:;" target="_blank" class="menuCon"><span class="menu menu02" style="visibility:hidden"><span class="editLink">修改链接</span><span class="editIcon">修改图标</span> <span class="editName">修改名称</span> <span class="del">删除</span></span></a><div class="imgBox"><img src="/dist/img/link_bg.png"></div><div class="nameBox"><input type="text" value="新建链接" name="" class="inText" style="display:none"> <span>新建链接</span></div></div></li>';
           $('.linkBox').find('ul').append(Ht);
       })
       .on('click','.fullScreen',function (){
@@ -261,30 +264,30 @@
               }
           },'json');
       })
-      .on('click','.del',function (e) {
-          e.stopPropagation();
-          e.preventDefault(); 
+      .on('click','.del',function (event) {
+          event.stopPropagation();
+          event.preventDefault();
           var li = $(this).parents('li');
           li.remove();
       })
-      .on('click','.editName',function (e) {
-          e.stopPropagation();
-          e.preventDefault(); 
+      .on('click','.editName',function (event) {
+          event.stopPropagation();
+          event.preventDefault();
           var li = $(this).parents('li');
           var nameBox = li.find('.nameBox');
           nameBox.find('span').hide();
           li.find('a').hide();
           nameBox.find('.inText').val(nameBox.find('span').text()).show().focus();
       })
-      .on('click','.editIcon',function (e) {
-          e.stopPropagation();
-          e.preventDefault(); 
+      .on('click','.editIcon',function (event) {
+          event.stopPropagation();
+          event.preventDefault();
           $('.imgUploadBox')[0]._targetDom = $(this).parents('li');
           $('.imgUploadBox').show();
       })
-      .on('click','.editLink',function (e) {
-          e.stopPropagation();
-          e.preventDefault(); 
+      .on('click','.editLink',function (event) {
+          event.stopPropagation();
+          event.preventDefault();
           var _this = this;
           var li = $(this).parents('li');
           //prompt层
