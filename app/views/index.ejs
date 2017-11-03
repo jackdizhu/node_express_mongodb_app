@@ -263,11 +263,13 @@
       })
       .on('click','.del',function (e) {
           e.stopPropagation();
+          e.preventDefault(); 
           var li = $(this).parents('li');
           li.remove();
       })
       .on('click','.editName',function (e) {
           e.stopPropagation();
+          e.preventDefault(); 
           var li = $(this).parents('li');
           var nameBox = li.find('.nameBox');
           nameBox.find('span').hide();
@@ -276,11 +278,13 @@
       })
       .on('click','.editIcon',function (e) {
           e.stopPropagation();
+          e.preventDefault(); 
           $('.imgUploadBox')[0]._targetDom = $(this).parents('li');
           $('.imgUploadBox').show();
       })
       .on('click','.editLink',function (e) {
           e.stopPropagation();
+          e.preventDefault(); 
           var _this = this;
           var li = $(this).parents('li');
           //prompt层
