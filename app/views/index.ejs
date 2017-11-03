@@ -167,11 +167,11 @@
         }
       }
       // 右键菜单 公共js
+        // 隐藏所有 菜单
+        function menuHidden() {
+            $('.menu').css('visibility','hidden');
+        }
       (function () {
-          // 隐藏所有 菜单
-          function menuHidden() {
-                $('.menu').css('visibility','hidden');
-          }
           // 显示右键菜单
           function fn_oncontextmenu(menu,event) {
               menuHidden();
@@ -267,12 +267,16 @@
       .on('click','.del',function (event) {
           event.stopPropagation();
           event.preventDefault();
+          menuHidden();
+
           var li = $(this).parents('li');
           li.remove();
       })
       .on('click','.editName',function (event) {
           event.stopPropagation();
           event.preventDefault();
+          menuHidden();
+
           var li = $(this).parents('li');
           var nameBox = li.find('.nameBox');
           nameBox.find('span').hide();
@@ -282,12 +286,16 @@
       .on('click','.editIcon',function (event) {
           event.stopPropagation();
           event.preventDefault();
+          menuHidden();
+
           $('.imgUploadBox')[0]._targetDom = $(this).parents('li');
           $('.imgUploadBox').show();
       })
       .on('click','.editLink',function (event) {
           event.stopPropagation();
           event.preventDefault();
+          menuHidden();
+
           var _this = this;
           var li = $(this).parents('li');
           //prompt层
