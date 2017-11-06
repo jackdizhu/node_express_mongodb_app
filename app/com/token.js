@@ -5,6 +5,7 @@ var _aes=require("./aes.js");
 
 //添加签名，防篡改
 var secret="express_jackdizhu";
+var key = '51ef7d6556208be091ff18a6ee2f4eba'; // 必须是32位
 
 
 var token={
@@ -19,7 +20,7 @@ var token={
         //payload信息
         var base64Str=JSON.stringify(obj2);
         // aes 对称 加密
-        base64Str = _aes.enCode(base64Str,'51ef7d6556208be091ff18a6ee2f4eba');
+        base64Str = _aes.enCode(base64Str,key);
 
         var hash=crypto.createHmac('sha256',secret);
             hash.update(base64Str);
@@ -42,7 +43,7 @@ var token={
             hash.update(decArr[0]);
         var checkSignature=hash.digest('base64');
 
-        decArr[0] = _aes.deCode(decArr[0],'51ef7d6556208be091ff18a6ee2f4eba');
+        decArr[0] = _aes.deCode(decArr[0],key);
         // aes 解密
         payload=JSON.parse(decArr[0]);
 

@@ -22,16 +22,6 @@ var key = 'express_jackdizhu';
 //     next();
 // });
 
-/* GET login page. */
-router.get('/wx', function(req, res, next) {
-  var _render = {
-      title: 'wx',
-      msg: '',
-      data: req.session._render,
-      username: ''
-  };
-  res.render('wx', _render);
-});
 /* GET home page. */
 router.get('/', function(req, res, next) {
   var Link = global.dbHandel.getModel('link');
@@ -423,13 +413,7 @@ router.post('/imgUpload', function(req, res, next) {
         var _jpg = '.' + base64Data[0].split('/')[1];
         var _data = base64Data[1].replace(/base64,/,'');
         var _b = new Buffer(_data,'base64');
-        // var name = (new Date()).getTime() + _jpg;
-
-        var decipher = crypto.createHash('md5',key);
-        var name = decipher.update(_data).digest('hex') + _jpg;
-
-        console.log(name);
-
+        var name = (new Date()).getTime() + _jpg;
         var _path = global._appPath + '/public/data/img/' + name;
 
         fs.writeFile(_path, _b, function(err) {
@@ -437,6 +421,7 @@ router.post('/imgUpload', function(req, res, next) {
             res.json({
               data: '/data/img/' + name,
               type: 'err',
+              err: err,
               msg: '保存失败 01'
             });
           }else{

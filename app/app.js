@@ -13,6 +13,9 @@ var oauth = require('./routes/oauth');
 
 var app = express();
 var session = require('express-session');
+// redis存储session
+var RedisStore = require('connect-redis')(session);
+
 var token = require('../app/com/token.js');
 
 var log = require('./com/log.js');
@@ -38,6 +41,39 @@ if(process.env.BAE_ENV_APPID){
       });
 }
 
+var redis = require('redis');
+/*数据库连接信息host,port,user,pwd,dbname(可查询数据库详情页)*/
+var username = '800f12d44790464c8847b2cbbb084322';  //用户AK
+var password = '7f7183997de24edc988a5a81a428a3f1';  //用户SK
+var db_host = 'redis.duapp.com';   
+var db_port = 80;
+var db_name = 'hhhkyJZnERVZesUFKOig';   //数据库名称
+
+var options = {"no_ready_check":true};
+
+function testRedis(req, res) {
+  var client = redis.createClient(db_port, db_host, options);
+  client.on("error", function (err) {
+    console.log("Error " + err);
+  });
+
+  // 建立连接后，在进行集合操作前，需要先进行auth验证
+
+  client.auth(username + '-' + password + '-' + db_name);
+
+  client.set('baidu', 'welcome to BAE');
+
+  client.get('baidu', function(err, result) {
+    if (err) {
+      console.log(err);
+      res.end('get error');
+      return;
+    }
+    res.end('result: ' + result);      
+  }); 
+
+}
+
 global._appPath = __dirname;
 
 // view engine setup
@@ -47,13 +83,26 @@ app.set('view engine', 'ejs');
 // uncomment after placing your favicon in /public
 // app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
-// limit: '1000kb' 配置 req.body 大小限制 处理413 错误
-app.use(bodyParser.json({limit: '1000kb'}));
-app.use(bodyParser.urlencoded({ extended: false ,limit: '1000kb'}));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 // app.use(express.static(path.join(__dirname, 'public')));
 // 配置 / 路由 不访问 index.html
 app.use(express.static(path.join(__dirname, 'public'),{'index': false}));
+
+
+var config={
+    "cookie" : {
+        "maxAge" : 60 * 60 * 24 * 30,   //Session的有效期为30天
+    },
+    "sessionStore" : {
+        "host" : "redis.duapp.com",
+        "port" : "80",
+        "pass" : "46ccb3a12276458ea4094eb25c130f74",
+        "ttl": 60 * 60 * 24 * 30,   //Session的有效期为30天
+    }
+};
+
 
 app.use(session({
     secret: 'secret',
@@ -61,6 +110,26 @@ app.use(session({
         maxAge: 1000*60*30,
     }
 }));
+
+// app.use(session({
+// 	store: new RedisStore({
+// 		host: 'redis.duapp.com',
+// 		port: 80,
+//         db: 'hhhkyJZnERVZesUFKOig',
+// 		pass: '46ccb3a12276458ea4094eb25c130f74'
+// 	}),
+// 	resave: false,
+// 	saveUninitialized: false,
+// 	secret: 'keyboard cat'
+// }));
+
+// app.use(session({
+//     name : "sid",
+//     secret : 'Asecret123-',
+//     cookie : config.cookie,
+//     store : new RedisStore(config.sessionStore)
+// }));
+
 
 app.use(function(req,res,next){
     res.locals.user = req.session.user;   // 从session 获取 user对象
@@ -123,6 +192,7 @@ app.use(function(req,res,next){
 app.use('/api', _api);
 
 app.use('/', index);
+app.use('/user', users);
 app.use('/user', users);
 // 微信授权
 app.use('/oauth', oauth);
