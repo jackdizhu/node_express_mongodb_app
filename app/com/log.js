@@ -1,7 +1,7 @@
 
 var fs = require('fs');
 
-var filename = './log/log.js';
+var filename = './log/index.log';
 
 var logger = function (Obj) {
     var data = new Date().toLocaleString() + '--\n  ' +  JSON.stringify(Obj) + '\n';

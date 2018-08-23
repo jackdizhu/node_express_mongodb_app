@@ -1,5 +1,5 @@
 
-node_baiduGit node项目 部署 百度云
+# node_baiduGit node项目 部署 百度云
 
 <!--http://jackdizhu.duapp.com-->
 <!--http://jackdizhu.duapp.com/oauth/wx_login-->
@@ -15,7 +15,7 @@ node_baiduGit node项目 部署 百度云
 // 启动 mongodb
 
     mongod.exe --dbpath D:/mongodb/data/db/ --auth
-    
+
 // 启动 node
 
     node www.js
@@ -29,3 +29,17 @@ db.createUser({"user":"root","pwd":"1234","customData":{employeeId:12345},"roles
 
     app.use(bodyParser.json({limit: '1000kb'}));
     app.use(bodyParser.urlencoded({ extended: false ,limit: '1000kb'}));
+
+
+# dev_caipu_api 微信小程序服务端
+
+* 服务端口 18080 sequelize 连接 mysql
+
+```
+// 生成数据 分类列表 随机推荐
+/api/init
+/api/get_list
+/api/get_listRandom
+/api/get_details
+/api/global_dateData
+```

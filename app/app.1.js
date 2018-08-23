@@ -75,8 +75,6 @@ function testRedis(req, res) {
 }
 
 global._appPath = __dirname;
-// 全局变量 缓存
-global.dateData = {}
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -177,15 +175,15 @@ app.use(function(req,res,next){
 
     if(!_token || !token.checkToken(_token)){
         req.session._render.istoken = false;
-        // log({
-        //   debug: req.session._render,
-        // });
+        log({
+          debug: req.session._render,
+        });
         next();  //中间件传递
     }else{
         req.session._render.istoken = true;
-        // log({
-        //   debug: req.session._render,
-        // });
+        log({
+          debug: req.session._render,
+        });
         next();  //中间件传递
     }
 });

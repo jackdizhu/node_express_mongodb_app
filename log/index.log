@@ -1,0 +1,6 @@
+2018-8-23 09:49:45--
+  {"err":{"name":"MongoError","message":"Authentication failed.","ok":0,"code":18,"errmsg":"Authentication failed."}}
+2018-8-23 09:50:51--
+  {"err":{"name":"MongoError","message":"Authentication failed.","ok":0,"code":18,"errmsg":"Authentication failed."}}
+2018-8-23 09:59:00--
+  {"err":{"name":"MongoError","message":"Authentication failed.","ok":0,"code":18,"errmsg":"Authentication failed."}}
