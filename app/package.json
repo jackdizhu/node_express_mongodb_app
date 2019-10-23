@@ -17,6 +17,6 @@
   "devDependencies": {
     "express-mongoose": "^0.1.0",
     "express-session": "^1.15.3",
-    "mongoose": "^4.10.7"
+    "mongoose": "^5.7.6"
   }
 }
